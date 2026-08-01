@@ -1,10 +1,7 @@
 class Solution:
     def firstUniqChar(self, s: str) -> int:
-        freq = Counter(s)
-        first_index = -1
+        for i in range(len(s)):
+            if s.count(s[i]) == 1:
+                return i
 
-        for index, letter in enumerate(list(s)):
-            if freq[letter] == 1:
-                first_index = index
-                break
-        return first_index
+        return -1
