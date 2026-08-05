@@ -6,18 +6,15 @@ class Solution:
 
         q.append(0)
         visited = [False for _ in range(len(adj))]
-
+        visited[0] = True
 
         while len(q) > 0:
             x = q.popleft()
-            
-            if not visited[x]:
-                result.append(x)
-            
-            visited[x] = True
+            result.append(x)
 
             for neighbour in adj[x]:
                 if not visited[neighbour]:
                     q.append(neighbour)
+                    visited[neighbour] = True
 
         return result
