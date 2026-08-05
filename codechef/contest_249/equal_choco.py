@@ -1,0 +1,30 @@
+import sys
+
+def solve(it):
+    # Write your code here
+    a = int(next(it))
+    x = int(next(it))
+    b = int(next(it))
+    y = int(next(it))
+
+    if a*x == b*y:
+        return "Yes"
+    return "NO"
+if __name__ == '__main__':
+    # Fast I/O
+
+    data = sys.stdin.buffer.read().split()
+
+    it = iter(data)
+
+    # test case input
+    # when no test case
+    # t = 1
+    t = int(next(it))
+
+    result = []
+    for _ in range(t):
+        result.append(solve(it))
+
+    sys.stdout.write("\n".join(result) + "\n")
+
