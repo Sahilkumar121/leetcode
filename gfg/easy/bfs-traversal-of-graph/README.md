@@ -43,7 +43,7 @@ Visit 4 (the next neighbor of 2) → Final Output: 0, 1, 2, 3, 4
 **Language:** Python  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-05T16:02:03.979Z  
+**Submitted:** 2026-08-05T16:08:37.232Z  
 
 ```py
 class Solution:
@@ -54,19 +54,16 @@ class Solution:
 
         q.append(0)
         visited = [False for _ in range(len(adj))]
-
+        visited[0] = True
 
         while len(q) > 0:
             x = q.popleft()
-            
-            if not visited[x]:
-                result.append(x)
-            
-            visited[x] = True
+            result.append(x)
 
             for neighbour in adj[x]:
                 if not visited[neighbour]:
                     q.append(neighbour)
+                    visited[neighbour] = True
 
         return result
 
