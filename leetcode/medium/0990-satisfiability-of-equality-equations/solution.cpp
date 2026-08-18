@@ -43,8 +43,8 @@ public:
 
         for (const auto& equation : equations) {
             if (equation[1] == '!') {
-                int x_position = equation[0] - 'a';
-                int y_position = equation[3] - 'a';
+                int x_position = find(equation[0] - 'a', parent);
+                int y_position = find(equation[3] - 'a', parent);
 
                 if (x_position == y_position) {
                     return false;
