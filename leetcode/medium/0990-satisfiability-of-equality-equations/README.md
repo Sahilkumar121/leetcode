@@ -43,9 +43,9 @@ Explanation: We could assign a = 1 and b = 1 to satisfy both equations.
 ## Solution
 
 **Language:** C++  
-**Runtime:** 0 ms  
-**Memory:** 8.3 MB  
-**Submitted:** 2026-08-18T05:14:20.801Z  
+**Runtime:** 4 ms (beats 6.93%)  
+**Memory:** 15 MB (beats 80.81%)  
+**Submitted:** 2026-08-18T05:16:02.846Z  
 
 ```cpp
 class Solution {
@@ -93,8 +93,8 @@ public:
 
         for (const auto& equation : equations) {
             if (equation[1] == '!') {
-                int x_position = equation[0] - 'a';
-                int y_position = equation[3] - 'a';
+                int x_position = find(equation[0] - 'a', parent);
+                int y_position = find(equation[3] - 'a', parent);
 
                 if (x_position == y_position) {
                     return false;
