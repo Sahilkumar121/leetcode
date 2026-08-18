@@ -43,14 +43,14 @@ Explanation: We could assign a = 1 and b = 1 to satisfy both equations.
 ## Solution
 
 **Language:** C++  
-**Runtime:** 2 ms (beats 15.50%)  
-**Memory:** 15.9 MB (beats 7.31%)  
-**Submitted:** 2026-08-18T04:56:25.182Z  
+**Runtime:** 0 ms  
+**Memory:** 8.3 MB  
+**Submitted:** 2026-08-18T05:14:20.801Z  
 
 ```cpp
 class Solution {
 public:
-    int find(int i, vector<int>& parent) {
+    int find(int i, int parent[]) {
         if (parent[i] == i) {
             return i;
         }
@@ -58,49 +58,51 @@ public:
         return parent[i] = find(parent[i], parent);
     }
 
-    void union_find(int x, int y, vector<int>& parent) {
+    void union_find(int x, int y, int parent[], int rank[]) {
         int x_parent = find(x, parent);
         int y_parent = find(y, parent);
 
         if (x_parent != y_parent) {
-            parent[y_parent] = x_parent;
+            if (rank[x_parent] > rank[y_parent]) {
+                parent[y_parent] = x_parent;
+            } else if (rank[x_parent] < rank[y_parent]) {
+                parent[x_parent] = y_parent;
+            } else {
+                parent[y_parent] = x_parent;
+                x_parent++;
+            }
         }
     }
     bool equationsPossible(vector<string>& equations) {
 
-        {
-            vector<int> parent(26, -1);
-            for (int i = 0; i < 26; i++) {
-                parent[i] = i;
+        int parent[26];
+        int rank[26] = {0};
+
+        for (int i = 0; i < 26; i++) {
+            parent[i] = i;
+        }
+
+        for (const auto& equation : equations) {
+            if (equation[1] == '=') {
+                int x_position = equation[0] - 'a';
+                int y_position = equation[3] - 'a';
+
+                union_find(x_position, y_position, parent, rank);
             }
+        }
 
-            stack<string> not_equal_equation;
+        for (const auto& equation : equations) {
+            if (equation[1] == '!') {
+                int x_position = equation[0] - 'a';
+                int y_position = equation[3] - 'a';
 
-            for (const auto& equation : equations) {
-                if (equation[1] == '=') {
-                    int x_position = equation[0] - 'a';
-                    int y_position = equation[3] - 'a';
-
-                    union_find(x_position, y_position, parent);
-                } else {
-                    not_equal_equation.push(equation);
-                }
-            }
-
-            while (!not_equal_equation.empty()) {
-                string s = not_equal_equation.top();
-                not_equal_equation.pop();
-
-                int x_parent = find(s[0] - 'a', parent);
-                int y_parent = find(s[3] - 'a', parent);
-
-                if (x_parent == y_parent) {
+                if (x_position == y_position) {
                     return false;
                 }
             }
-
-            return true;
         }
+
+        return true;
     }
 };
 ```
