@@ -44,77 +44,65 @@ Therefore, we return 14.
 ## Solution
 
 **Language:** C++  
-**Runtime:** 0 ms  
-**Memory:** 8.5 MB  
-**Submitted:** 2026-08-19T16:44:24.036Z  
+**Runtime:** 46 ms (beats 69.25%)  
+**Memory:** 151 MB (beats 70.86%)  
+**Submitted:** 2026-08-19T16:52:26.991Z  
 
 ```cpp
 class Solution {
 public:
-    int find(int i, vector<int> &parent)
-    {
-        if (i == parent[i])
-        {
+    vector<int> parent;
+    vector<int> rank;
+
+    int find(int i) {
+        if (i == parent[i]) {
             return i;
         }
 
-        return parent[i] = find(parent[i], parent);
+        return parent[i] = find(parent[i]);
     }
 
-    void union_find(int x, int y, vector<int> &parent, vector<int> &rank)
-    {
-        int x_parent = find(x, parent);
-        int y_parent = find(y, parent);
+    void union_find(int x, int y) {
+        int x_parent = find(x);
+        int y_parent = find(y);
 
-        if (x_parent != y_parent)
-        {
-            if (rank[x_parent] > rank[y_parent])
-            {
+        if (x_parent != y_parent) {
+            if (rank[x_parent] > rank[y_parent]) {
                 parent[y_parent] = x_parent;
-            }
-            else if (rank[y_parent] > rank[x_parent])
-            {
+            } else if (rank[y_parent] > rank[x_parent]) {
                 parent[x_parent] = y_parent;
             }
 
-            else
-            {
+            else {
                 parent[y_parent] = x_parent;
                 rank[x_parent]++;
             }
         }
     }
-
-    long long countPairs(int n, vector<vector<int>> &edges)
-    {
-
-        vector<int> parent(n, -1);
-        vector<int> rank(n, 0);
-        for (int i = 0; i < n; ++i)
-        {
+    long long countPairs(int n, vector<vector<int>>& edges) {
+        parent.resize(n);
+        rank.resize(n, 0);
+        for (int i = 0; i < n; ++i) {
             parent[i] = i;
         }
 
         // create union of edges
-        for (const auto &pairs : edges)
-        {
-            union_find(pairs.front(), pairs.back(), parent, rank);
+        for (const auto& pairs : edges) {
+            union_find(pairs.front(), pairs.back());
         }
 
         // find components
         unordered_map<int, int> m;
-        for (int i = 0; i < n; i++)
-        {
-            m[parent[i]]++;
+        for (int i = 0; i < n; i++) {
+            m[find(i)]++;
         }
 
-        int remaining = n;
+        long long remaining = n;
         long long count = 0;
 
-        for (const auto &pair : m)
-        {
-            count += pair.second * (remaining - pair.second);
-            remaining -= pair.second;
+        for (const auto& it : m) {
+            count += (it.second) * (remaining - it.second);
+            remaining -= it.second;
         }
 
         return count;
