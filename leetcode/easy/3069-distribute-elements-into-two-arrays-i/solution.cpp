@@ -10,7 +10,7 @@ public:
 
         for (int i=2; i<nums.size(); i++)
         {
-            if (arr1[arr1.size() - 1] > arr2[arr2.size() - 1])
+            if (arr1.back() > arr2.back())
             {
                 arr1.push_back(nums[i]);
             }
@@ -20,19 +20,9 @@ public:
             }
         }
 
-        vector<int> result;
+        arr1.insert(arr1.end(), arr2.begin(), arr2.end());
 
-        for (const auto &num : arr1)
-        {
-            result.push_back(num);
-        }
-
-        for (const auto &num : arr2)
-        {
-            result.push_back(num);
-        }
-
-        return result;
+        return arr1;
         
     }
 };
