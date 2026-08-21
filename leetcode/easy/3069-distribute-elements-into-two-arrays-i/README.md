@@ -53,8 +53,8 @@ Hence, the array result formed by concatenation is [5,3,4,8].
 
 **Language:** C++  
 **Runtime:** 0 ms (beats 100.00%)  
-**Memory:** 24.2 MB (beats 19.73%)  
-**Submitted:** 2026-08-21T05:42:40.147Z  
+**Memory:** 23.9 MB (beats 66.96%)  
+**Submitted:** 2026-08-21T05:44:53.936Z  
 
 ```cpp
 class Solution {
@@ -69,7 +69,7 @@ public:
 
         for (int i=2; i<nums.size(); i++)
         {
-            if (arr1[arr1.size() - 1] > arr2[arr2.size() - 1])
+            if (arr1.back() > arr2.back())
             {
                 arr1.push_back(nums[i]);
             }
@@ -79,19 +79,9 @@ public:
             }
         }
 
-        vector<int> result;
+        arr1.insert(arr1.end(), arr2.begin(), arr2.end());
 
-        for (const auto &num : arr1)
-        {
-            result.push_back(num);
-        }
-
-        for (const auto &num : arr2)
-        {
-            result.push_back(num);
-        }
-
-        return result;
+        return arr1;
         
     }
 };
