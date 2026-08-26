@@ -2,20 +2,27 @@
 
 using namespace std;
 
+const long long INF = 1e18; // Represents infinity
+
 void solve()
 {
     long long A, B, P, Q, R;
     cin >> A >> B >> P >> Q >> R;
 
+    // Keep the set as you requested to optimize the queue
     set<pair<long long, pair<int, int>>> st;
 
-    map<pair<int, int>, long long> dist;
+    // Use a 2D vector instead of a map.
+    // Size is A+1 by B+1. Initialize all distances to INF.
+    // This is 100x faster than std::map and prevents TLE for T=1000.
+    vector<vector<long long>> dist(A + 1, vector<long long>(B + 1, INF));
 
     vector<vector<int>> direction_p = {{1, 0}, {2, 0}};
     vector<vector<int>> direction_q = {{0, 1}, {0, 2}};
     vector<vector<int>> direction_r = {{1, 1}};
 
-    dist[{0, 0}] = 0;
+    // Initialize start position
+    dist[0][0] = 0;
     st.insert({0, {0, 0}});
 
     long long min_cost = -1;
@@ -24,40 +31,45 @@ void solve()
     {
         auto it = st.begin();
         long long cost = it->first;
-        pair<int, int> cordinate = it->second;
+        int x = it->second.first;
+        int y = it->second.second;
         st.erase(it);
 
-        int x = cordinate.first;
-        int y = cordinate.second;
-
+        // If we reached the target, record it and exit the loop
         if (x == A && y == B)
         {
             min_cost = cost;
             break;
         }
 
+        // Helper lambda
         auto process_move = [&](int dx, int dy, long long move_cost)
         {
             int nx = x + dx;
             int ny = y + dy;
 
+            // Check boundaries
             if (nx <= A && ny <= B)
             {
                 long long new_cost = cost + move_cost;
 
-                if (dist.find({nx, ny}) == dist.end() || new_cost < dist[{nx, ny}])
+                // If we found a strictly cheaper path to this cell
+                if (new_cost < dist[nx][ny])
                 {
-                    if (dist.find({nx, ny}) != dist.end())
+                    // Erase the old record in the set if it exists
+                    if (dist[nx][ny] != INF)
                     {
-                        st.erase({dist[{nx, ny}], {nx, ny}});
+                        st.erase({dist[nx][ny], {nx, ny}});
                     }
 
-                    dist[{nx, ny}] = new_cost;
+                    // Update to new distance
+                    dist[nx][ny] = new_cost;
                     st.insert({new_cost, {nx, ny}});
                 }
             }
         };
 
+        // Apply moves
         for (const auto &d : direction_p)
             process_move(d[0], d[1], P);
         for (const auto &d : direction_q)
@@ -71,10 +83,11 @@ void solve()
 
 int main()
 {
+    // Essential for T=1000 to prevent Input/Output bottlenecks
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int t = 1;
+    int t;
     if (cin >> t)
     {
         while (t--)
