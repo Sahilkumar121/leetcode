@@ -1,0 +1,78 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve()
+{
+    int A, B, P, Q, R;
+    cin >> A >> B >> P >> Q >> R;
+
+    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+
+    vector<vector<int>> direction_p = {{1, 0}, {2, 0}};
+    vector<vector<int>> direction_q = {{0, 1}, {0, 2}};
+    vector<vector<int>> direction_r = {{1, 1}};
+
+    pq.push({0, {0, 0}});
+
+    int min_cost = 0;
+    while (!pq.empty())
+    {
+        pair<int, pair<int, int>> p = pq.top();
+        pq.pop();
+
+        int cost = p.first;
+        pair<int, int> cordinate = p.second;
+        int x = cordinate.first;
+        int y = cordinate.second;
+
+        min_cost = cost;
+        if (x == A && y == B)
+        {
+            min_cost = cost;
+            break;
+        }
+
+        for (const auto &d : direction_p)
+        {
+            if (x + d[0] <= A && y + d[1] <= B)
+            {
+                pq.push({P + cost, {x + d[0], y + d[1]}});
+            }
+        }
+
+        for (const auto &d : direction_q)
+        {
+            if (x + d[0] <= A && y + d[1] <= B)
+            {
+                pq.push({Q + cost, {x + d[0], y + d[1]}});
+            }
+        }
+
+        for (const auto &d : direction_r)
+        {
+            if (x + d[0] <= A && y + d[1] <= B)
+            {
+                pq.push({R + cost, {x + d[0], y + d[1]}});
+            }
+        }
+    }
+
+    cout << min_cost << "\n";
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t = 1;
+    cin >> t;
+
+    while (t--)
+    {
+        solve();
+    }
+
+    return 0;
+}
