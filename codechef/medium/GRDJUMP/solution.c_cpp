@@ -4,58 +4,66 @@ using namespace std;
 
 void solve()
 {
-    int A, B, P, Q, R;
+    long long A, B, P, Q, R;
     cin >> A >> B >> P >> Q >> R;
 
-    priority_queue<pair<int, pair<int, int>>, vector<pair<int, pair<int, int>>>, greater<pair<int, pair<int, int>>>> pq;
+    set<pair<long long, pair<int, int>>> st;
+
+    map<pair<int, int>, long long> dist;
 
     vector<vector<int>> direction_p = {{1, 0}, {2, 0}};
     vector<vector<int>> direction_q = {{0, 1}, {0, 2}};
     vector<vector<int>> direction_r = {{1, 1}};
 
-    pq.push({0, {0, 0}});
+    dist[{0, 0}] = 0;
+    st.insert({0, {0, 0}});
 
-    int min_cost = 0;
-    while (!pq.empty())
+    long long min_cost = -1;
+
+    while (!st.empty())
     {
-        pair<int, pair<int, int>> p = pq.top();
-        pq.pop();
+        auto it = st.begin();
+        long long cost = it->first;
+        pair<int, int> cordinate = it->second;
+        st.erase(it);
 
-        int cost = p.first;
-        pair<int, int> cordinate = p.second;
         int x = cordinate.first;
         int y = cordinate.second;
 
-        min_cost = cost;
         if (x == A && y == B)
         {
             min_cost = cost;
             break;
         }
 
+        auto process_move = [&](int dx, int dy, long long move_cost)
+        {
+            int nx = x + dx;
+            int ny = y + dy;
+
+            if (nx <= A && ny <= B)
+            {
+                long long new_cost = cost + move_cost;
+
+                if (dist.find({nx, ny}) == dist.end() || new_cost < dist[{nx, ny}])
+                {
+                    if (dist.find({nx, ny}) != dist.end())
+                    {
+                        st.erase({dist[{nx, ny}], {nx, ny}});
+                    }
+
+                    dist[{nx, ny}] = new_cost;
+                    st.insert({new_cost, {nx, ny}});
+                }
+            }
+        };
+
         for (const auto &d : direction_p)
-        {
-            if (x + d[0] <= A && y + d[1] <= B)
-            {
-                pq.push({P + cost, {x + d[0], y + d[1]}});
-            }
-        }
-
+            process_move(d[0], d[1], P);
         for (const auto &d : direction_q)
-        {
-            if (x + d[0] <= A && y + d[1] <= B)
-            {
-                pq.push({Q + cost, {x + d[0], y + d[1]}});
-            }
-        }
-
+            process_move(d[0], d[1], Q);
         for (const auto &d : direction_r)
-        {
-            if (x + d[0] <= A && y + d[1] <= B)
-            {
-                pq.push({R + cost, {x + d[0], y + d[1]}});
-            }
-        }
+            process_move(d[0], d[1], R);
     }
 
     cout << min_cost << "\n";
@@ -67,11 +75,12 @@ int main()
     cin.tie(nullptr);
 
     int t = 1;
-    cin >> t;
-
-    while (t--)
+    if (cin >> t)
     {
-        solve();
+        while (t--)
+        {
+            solve();
+        }
     }
 
     return 0;
