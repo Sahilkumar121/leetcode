@@ -1,0 +1,49 @@
+#include <bits/stdc++.h>
+
+using namespace std;
+
+void solve()
+{
+    int n;
+    cin >> n;
+
+    int max_cost = INT_MIN;
+    vector<int> items(n);
+    for (int i = 0; i < n; i++)
+    {
+        cin >> items[i];
+    }
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = i + 1; j < n; j++)
+        {
+            if (items[j] >= items[i])
+            {
+                max_cost = max(max_cost, items[i] + items[j]);
+            }
+            else
+            {
+                max_cost = max(max_cost, items[i]);
+            }
+        }
+    }
+
+    cout << max_cost << "\n";
+}
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int t = 1;
+    cin >> t;
+
+    while (t--)
+    {
+        solve();
+    }
+
+    return 0;
+}
