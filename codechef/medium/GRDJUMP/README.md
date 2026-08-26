@@ -65,12 +65,14 @@ For the given costs, this is optimal.
 **Language:** c_cpp  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-08-26T15:36:08.663Z  
+**Submitted:** 2026-08-26T15:37:43.321Z  
 
 ```c_cpp
 #include <bits/stdc++.h>
 
 using namespace std;
+
+const long long INF = 1e18;
 
 void solve()
 {
@@ -79,13 +81,13 @@ void solve()
 
     set<pair<long long, pair<int, int>>> st;
 
-    map<pair<int, int>, long long> dist;
+    vector<vector<long long>> dist(A + 1, vector<long long>(B + 1, INF));
 
     vector<vector<int>> direction_p = {{1, 0}, {2, 0}};
     vector<vector<int>> direction_q = {{0, 1}, {0, 2}};
     vector<vector<int>> direction_r = {{1, 1}};
 
-    dist[{0, 0}] = 0;
+    dist[0][0] = 0;
     st.insert({0, {0, 0}});
 
     long long min_cost = -1;
@@ -94,11 +96,9 @@ void solve()
     {
         auto it = st.begin();
         long long cost = it->first;
-        pair<int, int> cordinate = it->second;
+        int x = it->second.first;
+        int y = it->second.second;
         st.erase(it);
-
-        int x = cordinate.first;
-        int y = cordinate.second;
 
         if (x == A && y == B)
         {
@@ -115,14 +115,14 @@ void solve()
             {
                 long long new_cost = cost + move_cost;
 
-                if (dist.find({nx, ny}) == dist.end() || new_cost < dist[{nx, ny}])
+                if (new_cost < dist[nx][ny])
                 {
-                    if (dist.find({nx, ny}) != dist.end())
+                    if (dist[nx][ny] != INF)
                     {
-                        st.erase({dist[{nx, ny}], {nx, ny}});
+                        st.erase({dist[nx][ny], {nx, ny}});
                     }
 
-                    dist[{nx, ny}] = new_cost;
+                    dist[nx][ny] = new_cost;
                     st.insert({new_cost, {nx, ny}});
                 }
             }
@@ -144,7 +144,7 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int t = 1;
+    int t;
     if (cin >> t)
     {
         while (t--)
