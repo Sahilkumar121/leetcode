@@ -1,0 +1,87 @@
+# Fibonacci Number
+
+![Difficulty](https://img.shields.io/badge/Difficulty-Easy-green)
+
+## Problem
+
+The  **Fibonacci numbers**, commonly denoted `F(n)` form a sequence, called the  **Fibonacci sequence**, such that each number is the sum of the two preceding ones, starting from `0` and `1`. That is,
+
+```
+F(0) = 0, F(1) = 1
+F(n) = F(n - 1) + F(n - 2), for n > 1.
+
+```
+
+Given `n`, calculate `F(n)`.
+
+ 
+
+ **Example 1:** 
+
+```
+Input: n = 2
+Output: 1
+Explanation: F(2) = F(1) + F(0) = 1 + 0 = 1.
+
+```
+
+ **Example 2:** 
+
+```
+Input: n = 3
+Output: 2
+Explanation: F(3) = F(2) + F(1) = 1 + 1 = 2.
+
+```
+
+ **Example 3:** 
+
+```
+Input: n = 4
+Output: 3
+Explanation: F(4) = F(3) + F(2) = 2 + 1 = 3.
+
+```
+
+ 
+
+ **Constraints:** 
+
+- 0 <= n <= 30
+
+## Solution
+
+**Language:** C++  
+**Runtime:** 3 ms (beats 64.55%)  
+**Memory:** 8.3 MB (beats 11.38%)  
+**Submitted:** 2026-08-28T04:29:55.421Z  
+
+```cpp
+class Solution {
+public:
+    int ans(int n, std::vector<int>& memo) {
+        if (memo[n] != -1) {
+            return memo[n];
+        }
+
+        return memo[n] = ans(n - 1, memo) + ans(n - 2, memo);
+    }
+    int fib(int n) {
+
+        if (n <= 1)
+        {
+            return n;
+        }
+        
+        std::vector<int> memo(n + 1, -1);
+        memo[0] = 0;
+        memo[1] = 1;
+
+        return ans(n, memo);
+    }
+};
+```
+
+---
+
+[View on LeetCode](https://leetcode.com/problems/fibonacci-number/)
