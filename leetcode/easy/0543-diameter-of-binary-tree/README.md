@@ -38,49 +38,38 @@ Output: 1
 
 ## Solution
 
-**Language:** C++  
-**Runtime:** 0 ms (beats 100.00%)  
-**Memory:** 23.6 MB (beats 93.98%)  
-**Submitted:** 2026-09-01T16:13:19.902Z  
+**Language:** Python  
+**Runtime:** 6 ms (beats 26.85%)  
+**Memory:** 22.1 MB (beats 89.08%)  
+**Submitted:** 2026-09-01T16:45:47.400Z  
 
-```cpp
-/**
- * Definition for a binary tree node.
- * struct TreeNode {
- *     int val;
- *     TreeNode *left;
- *     TreeNode *right;
- *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
- *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
- *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
- * };
- */
-class Solution {
-    int maxDiameter;
-public:
-    int getDepth(TreeNode *root)
-    {
-        if (root == nullptr)
-        {
-            return 0;
-        }
+```py
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    __maxDiameter = 0
 
-        int leftPart = getDepth(root->left);
-        int rightPart = getDepth(root->right);
+    def get_depth(self, root: TreeNode) -> int:
+        if root is None:
+            return 0
 
-        maxDiameter = max(maxDiameter, rightPart + leftPart);
+        left_part = self.get_depth(root.left)
+        right_part = self.get_depth(root.right)
 
-        return max(leftPart ,rightPart) + 1;
+        self.__maxDiameter = max(self.__maxDiameter, left_part + right_part)
 
-    }
-    int diameterOfBinaryTree(TreeNode *root)
-    {
-        maxDiameter = 0;
-        getDepth(root);
+        return max(left_part, right_part) + 1
 
-        return maxDiameter;
-    }
-};
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        self.__maxDiameter = 0
+
+        self.get_depth(root)
+        return self.__maxDiameter
+
 ```
 
 ---
