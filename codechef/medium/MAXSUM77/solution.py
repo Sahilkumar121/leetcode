@@ -16,9 +16,9 @@ def solve(it) -> str:
     current_sum = sum(nums[:window])
     max_sum = current_sum
 
-    for i in range(1, window + 1):
-        window_sum = nums[i] + nums[i+1]
-        max_sum = max(max_sum, window_sum)
+    for i in range(window, n):
+        current_sum += nums[i] - nums[i-window]
+        max_sum = max(max_sum, current_sum)
 
     return str(max_sum)
 
