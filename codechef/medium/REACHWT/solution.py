@@ -8,7 +8,7 @@ def solve(it) -> str:
     one_kg = n * 20
     two_kg = ((n // 2) * 30) + ((n % 2) * 20)
 
-    return str(min(one_kg, two_kg))
+    return str(max(one_kg, two_kg))
 
 def main():
     input_data = sys.stdin.read().split()
