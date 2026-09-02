@@ -51,7 +51,7 @@ Output
 **Language:** Python  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T15:37:51.149Z  
+**Submitted:** 2026-09-02T15:36:30.913Z  
 
 ```py
 import sys
@@ -72,9 +72,9 @@ def solve(it) -> str:
     current_sum = sum(nums[:window])
     max_sum = current_sum
 
-    for i in range(window, n):
-        current_sum += nums[i] - nums[i-1]
-        max_sum = max(max_sum, current_sum)
+    for i in range(1, window + 1):
+        window_sum = nums[i] + nums[i+1]
+        max_sum = max(max_sum, window_sum)
 
     return str(max_sum)
 
