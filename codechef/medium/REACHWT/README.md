@@ -52,7 +52,7 @@ Output
 **Language:** Python  
 **Runtime:** N/A  
 **Memory:** N/A  
-**Submitted:** 2026-09-02T14:42:47.730Z  
+**Submitted:** 2026-09-02T14:42:14.652Z  
 
 ```py
 import sys
@@ -65,7 +65,7 @@ def solve(it) -> str:
     one_kg = n * 20
     two_kg = ((n // 2) * 30) + ((n % 2) * 20)
 
-    return str(min(one_kg, two_kg))
+    return str(max(one_kg, two_kg))
 
 def main():
     input_data = sys.stdin.read().split()
